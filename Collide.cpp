@@ -16,10 +16,6 @@ bool Collide::IsEqual(float firstNumber, float secondNumber) {
 }
 
 bool Collide::IsBetween(float firstNumber, float secondNumber, float thirdNumber) {
-	if (firstNumber == thirdNumber) {
-		return false;
-	}
-
 	if (firstNumber > secondNumber && firstNumber < thirdNumber) {
 		return true;
 	}
