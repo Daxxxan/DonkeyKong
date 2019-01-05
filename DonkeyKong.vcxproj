@@ -119,39 +119,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Block.cpp" />
-    <ClCompile Include="..\DonkeyKong.cpp" />
-    <ClCompile Include="..\Entity.cpp" />
-    <ClCompile Include="..\EntityManager.cpp" />
-    <ClCompile Include="..\Game.cpp" />
-    <ClCompile Include="..\Ladder.cpp" />
-    <ClCompile Include="..\pch.cpp" />
-    <ClCompile Include="..\Player.cpp" />
-    <ClCompile Include="..\StringHelpers.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="DonkeyKong.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="EntityManager.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Ladder.cpp" />
+    <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="StringHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Block.h" />
-    <ClInclude Include="..\Entity.h" />
-    <ClInclude Include="..\EntityManager.h" />
-    <ClInclude Include="..\Game.h" />
-    <ClInclude Include="..\Ladder.h" />
-    <ClInclude Include="..\pch.h" />
-    <ClInclude Include="..\Player.h" />
-    <ClInclude Include="..\StringHelpers.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityManager.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Ladder.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="StringHelpers.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Media\Textures\Block.png" />
-    <Image Include="..\Media\Textures\Echelle.PNG" />
-    <Image Include="..\Media\Textures\Mario.PNG" />
-    <Image Include="..\Media\Textures\Mario1.png" />
-    <Image Include="..\Media\Textures\Mario2.png" />
-    <Image Include="..\Media\Textures\Mario_small.png" />
-    <Image Include="..\Media\Textures\Mario_small_transparent.png" />
-    <Image Include="..\Media\Textures\Piece.PNG" />
-    <Image Include="..\Media\Textures\tumblr_mkcq5fge0w1s9677oo1_r1_500.gif" />
+    <Image Include="Media\Textures\Block.png" />
+    <Image Include="Media\Textures\Echelle.PNG" />
+    <Image Include="Media\Textures\Mario.PNG" />
+    <Image Include="Media\Textures\Mario1.png" />
+    <Image Include="Media\Textures\Mario2.png" />
+    <Image Include="Media\Textures\Mario_small.png" />
+    <Image Include="Media\Textures\Mario_small_transparent.png" />
+    <Image Include="Media\Textures\Piece.PNG" />
+    <Image Include="Media\Textures\tumblr_mkcq5fge0w1s9677oo1_r1_500.gif" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="..\Media\Sansation.ttf" />
+    <Font Include="Media\Sansation.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
