@@ -65,7 +65,7 @@ Game::Game()
 	mPlayer.setTexture(mTexture);
 	sf::Vector2f posMario;
 	posMario.x = 100.f + 70.f;
-	posMario.y = BLOCK_SPACE * 5 - _sizeMario.y;
+	posMario.y = BLOCK_SPACE * 5 - _sizeMario.y + 4;
 
 	mPlayer.setPosition(posMario);
 
@@ -199,27 +199,32 @@ void Game::updateStatistics(sf::Time elapsedTime)
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	if (key == sf::Keyboard::Up && EntityManager::m_Player->isOnLadder()) {
-		mIsMovingUp = isPressed;
-	}
-	else {
-		mIsMovingUp = false;
+	if (key == sf::Keyboard::Up) {
+		if (EntityManager::m_Player->IsOnLadder()) {
+			mIsMovingUp = isPressed;
+		}
+		else if (!EntityManager::m_Player->IsOnBlock()) {
+			mIsMovingUp = isPressed;
+		} else {
+			mIsMovingUp = false;
+		}
 	}
 
-	if (key == sf::Keyboard::Left && EntityManager::m_Player->isOnBlock()) {
+	if (key == sf::Keyboard::Left && EntityManager::m_Player->IsOnBlock()) {
 		mIsMovingLeft = isPressed;
 	}
 	else {
 		mIsMovingLeft = false;
 	}
-	if (key == sf::Keyboard::Right && EntityManager::m_Player->isOnBlock()) {
+	if (key == sf::Keyboard::Right && EntityManager::m_Player->IsOnBlock()) {
 		mIsMovingRight = isPressed;
 	}
 	else {
 		mIsMovingRight = false;
 	}
 
-	if (key == sf::Keyboard::Down && !EntityManager::m_Player->isOnBlock()) {
+	if (key == sf::Keyboard::Down && (!EntityManager::m_Player->IsOnBlock() ||
+		EntityManager::m_Player->IsOnLadderAxis())) {
 		mIsMovingDown = isPressed;
 	}
 	else {
