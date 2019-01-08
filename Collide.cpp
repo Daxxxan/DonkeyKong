@@ -1,4 +1,7 @@
 #include "Collide.h"
+#include "Player.h"
+#include "EntityManager.h"
+#include <math.h>
 
 
 
@@ -82,4 +85,52 @@ bool Collide::BottomFirstSpriteBetweenTopAndBottomSecondSprite(sf::Sprite firstS
 	return Collide::IsBetween(bottomFirstSprite, topSecondSprite, bottomSecondSprite);
 }
 
+double Collide::GetDistance(sf::Sprite s1, sf::Sprite s2)
+{
+	sf::FloatRect s1Bounds = s1.getGlobalBounds();
+	sf::FloatRect s2Bounds = s2.getGlobalBounds();
 
+	return sqrt(pow(s2Bounds.left - s1Bounds.left, 2) + pow(s2Bounds.top - s1Bounds.top, 2));
+}
+
+std::shared_ptr<Block> Collide::GetTheNearestBlockUnderPlayer(std::shared_ptr<Player> p)
+{
+	std::shared_ptr<Block> result = NULL;
+	double minDist;
+	double currentDist;
+
+	for (std::shared_ptr<Block> b : EntityManager::m_Blocks)
+	{
+		if (b->m_sprite.getGlobalBounds().top > p->m_sprite.getGlobalBounds().top)
+		{
+			if (result == NULL)
+			{
+				result = b;
+				minDist = Collide::GetDistance(b->m_sprite, p->m_sprite);
+				continue;
+			}
+
+			currentDist = Collide::GetDistance(b->m_sprite, p->m_sprite);
+
+			if (currentDist < minDist)
+			{
+				result = b;
+				minDist = currentDist;
+			}
+		}
+	}
+
+	return result;
+}
+
+/* Put a Player on the floor */
+void Collide::putOnTheFloor(std::shared_ptr<Player> p)
+{
+	std::shared_ptr<Block> b = Collide::GetTheNearestBlockUnderPlayer(p);
+
+	if (!b->m_sprite.getGlobalBounds().intersects(p->m_sprite.getGlobalBounds()) && !p->IsOnLadder()) {
+		sf::Vector2f movement(0.0f, 1.0f);
+
+		p->m_sprite.move(movement);
+	}
+}

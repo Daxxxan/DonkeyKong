@@ -125,6 +125,8 @@ void Game::processEvents()
 			break;
 		}
 	}
+
+	Collide::putOnTheFloor(EntityManager::m_Player); //Is it the right place to put this ?
 }
 
 void Game::update(sf::Time elapsedTime)
