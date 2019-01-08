@@ -44,7 +44,7 @@ bool Collide::TopFirstSpriteCollideBottomSecondSprite(sf::Sprite firstSprite, sf
 	float topFirstSprite = firstSprite.getGlobalBounds().top;
 	float BottomSecondSprite = secondSprite.getGlobalBounds().top + secondSprite.getLocalBounds().height;
 
-	return Collide::IsEqual(topFirstSprite, BottomSecondSprite);
+	return Collide::IsBetween(topFirstSprite, BottomSecondSprite - 10, BottomSecondSprite + 10);
 }
 
 bool Collide::LeftFirstSpriteCollideRightSecondSprite(sf::Sprite firstSprite, sf::Sprite secondSprite) {

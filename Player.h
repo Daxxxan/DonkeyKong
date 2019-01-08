@@ -16,4 +16,5 @@ public:
 	bool IsOnLadderAxis();
 	bool IsOnBlock();
 	bool IsUnderABlock();
+	bool MarioCollideTheAboveBlock();
 };

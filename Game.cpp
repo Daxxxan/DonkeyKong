@@ -19,6 +19,7 @@ Game::Game()
 	, mIsMovingDown(false)
 	, mIsMovingRight(false)
 	, mIsMovingLeft(false)
+	, mIsJump(false)
 {
 	mWindow.setFramerateLimit(160);
 
@@ -140,6 +141,14 @@ void Game::update(sf::Time elapsedTime)
 		movement.x -= PlayerSpeed;
 	if (mIsMovingRight)
 		movement.x += PlayerSpeed;
+	if (mIsJump) {
+		if (!EntityManager::m_Player->IsOnLadder()) {
+			sf::Clock clock;
+			sf::Vector2f movement(0.f, 0.f);
+			movement.y -= 110.0;
+			EntityManager::m_Player->m_sprite.move(movement * elapsedTime.asSeconds());
+		}
+	}
 
 	EntityManager::m_Player->m_sprite.move(movement * elapsedTime.asSeconds());
 }
@@ -235,5 +244,11 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 
 	if (key == sf::Keyboard::Space)
 	{
+		if (EntityManager::m_Player->MarioCollideTheAboveBlock()) {
+			mIsJump = false;
+		}
+		else {
+			mIsJump = isPressed;
+		}
 	}
 }

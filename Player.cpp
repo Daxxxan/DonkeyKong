@@ -84,3 +84,12 @@ bool Player::IsUnderABlock() {
 	}
 	return false;
 }
+
+bool Player::MarioCollideTheAboveBlock() {
+	for (std::shared_ptr<Block> block : EntityManager::m_Blocks) {
+		if (Collide::TopFirstSpriteCollideBottomSecondSprite(EntityManager::m_Player->m_sprite, block->m_sprite)) {
+			return true;
+		}
+	}
+	return false;
+}
