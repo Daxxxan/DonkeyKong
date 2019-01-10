@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Collide.cpp" />
+    <ClCompile Include="Dk.cpp" />
     <ClCompile Include="DonkeyKong.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityManager.cpp" />
@@ -133,6 +134,7 @@
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="Collide.h" />
+    <ClInclude Include="Dk.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Game.h" />
@@ -143,6 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Media\Textures\Block.png" />
+    <Image Include="Media\Textures\dk.png" />
     <Image Include="Media\Textures\Echelle.PNG" />
     <Image Include="Media\Textures\Mario.PNG" />
     <Image Include="Media\Textures\Mario1.png" />

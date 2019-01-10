@@ -59,6 +59,22 @@ Game::Game()
 		EntityManager::m_Ladders.push_back(se);
 	}
 
+	//Draw Donkey Kong
+	textureDk.loadFromFile("Media/Textures/dk.png");
+	sizeDk = textureDk.getSize();
+	spriteDk.setTexture(textureDk);
+	sf::Vector2f posDk;
+	posDk.x = 600.f;
+	posDk.y = BLOCK_SPACE - sizeDk.y + 2;
+
+	spriteDk.setPosition(posDk);
+
+	std::shared_ptr<Dk> dk = std::make_shared<Dk>();
+	dk->m_sprite = spriteDk;
+	dk->m_size = textureDk.getSize();
+	dk->m_position = spriteDk.getPosition();
+	EntityManager::m_Dk = dk;
+
 	// Draw Mario
 
 	mTexture.loadFromFile("Media/Textures/Mario_small_transparent.png"); // Mario_small.png");
@@ -127,7 +143,7 @@ void Game::processEvents()
 		}
 	}
 
-	Collide::putOnTheFloor(EntityManager::m_Player); //Is it the right place to put this ?
+	Collide::putOnTheFloor(EntityManager::m_Player);
 }
 
 void Game::update(sf::Time elapsedTime)
@@ -178,6 +194,7 @@ void Game::render()
 	}
 
 	mWindow.draw(EntityManager::m_Player->m_sprite);
+	mWindow.draw(EntityManager::m_Dk->m_sprite);
 
 	mWindow.draw(mStatisticsText);
 	mWindow.display();

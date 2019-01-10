@@ -31,6 +31,10 @@ private:
 	sf::Text	mStatisticsText;
 	sf::Time	mStatisticsUpdateTime;
 
+	sf::Texture textureDk;
+	sf::Vector2u sizeDk;
+	sf::Sprite	spriteDk;
+
 	std::size_t	mStatisticsNumFrames;
 	bool mIsMovingUp;
 	bool mIsMovingDown;
