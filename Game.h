@@ -1,4 +1,5 @@
 #pragma once
+#include "pch.h"
 
 #define ECHELLE_COUNT 4
 #define BLOCK_COUNT_X 8
@@ -36,11 +37,6 @@ private:
 	sf::Sprite	spriteDk;
 
 	std::size_t	mStatisticsNumFrames;
-	bool mIsMovingUp;
-	bool mIsMovingDown;
-	bool mIsMovingRight;
-	bool mIsMovingLeft;
-	bool mIsJump;
 
 	sf::Texture	_TextureEchelle;
 	sf::Sprite	_Echelle[ECHELLE_COUNT];

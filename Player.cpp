@@ -1,8 +1,14 @@
 #include "Player.h"
 #include "EntityManager.h"
 
-Player::Player()
+Player::Player(sf::Sprite m_sprite, sf::Vector2u m_size, sf::Vector2f m_position) 
+	: Entity::Entity(m_sprite, m_size, m_position)
 {
+	this->mIsMovingUp = false;
+	this->mIsMovingDown = false;
+	this->mIsMovingRight = false;
+	this->mIsMovingLeft = false;
+	this->mIsJump = false;
 }
 
 
@@ -91,5 +97,28 @@ bool Player::MarioCollideTheAboveBlock() {
 			return true;
 		}
 	}
+
 	return false;
+}
+
+void Player::Move()
+{
+	printf("Player direction : [up : %d, down : %d, left : %d, right : %d, jump : %d]\n", mIsMovingUp, mIsMovingDown, mIsMovingLeft,
+		mIsMovingRight, mIsJump);
+	sf::Vector2f movement(0.f, 0.f);
+	if (mIsMovingUp)
+		movement.y -= movementSpeed;
+	if (mIsMovingDown)
+		movement.y += movementSpeed;
+	if (mIsMovingLeft)
+		movement.x -= movementSpeed;
+	if (mIsMovingRight)
+		movement.x += movementSpeed;
+	if (mIsJump) {
+		if (!EntityManager::m_Player->IsOnLadder()) {
+			movement.y -= movementSpeed;
+		}
+	}
+
+	EntityManager::m_Player->m_sprite.move(movement);
 }

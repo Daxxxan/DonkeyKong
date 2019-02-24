@@ -7,7 +7,15 @@
 class Player : public Entity
 {
 public:
-	Player();
+	const float movementSpeed = 1.f;
+	bool mIsMovingUp;
+	bool mIsMovingDown;
+	bool mIsMovingRight;
+	bool mIsMovingLeft;
+	bool mIsJump;
+
+public:
+	Player(sf::Sprite m_sprite, sf::Vector2u m_size, sf::Vector2f m_position);
 	~Player();
 
 public:
@@ -17,4 +25,5 @@ public:
 	bool IsOnBlock();
 	bool IsUnderABlock();
 	bool MarioCollideTheAboveBlock();
+	void Move();
 };

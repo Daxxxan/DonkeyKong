@@ -128,8 +128,8 @@ void Collide::putOnTheFloor(std::shared_ptr<Player> p)
 {
 	std::shared_ptr<Block> b = Collide::GetTheNearestBlockUnderPlayer(p);
 
-	if (!b->m_sprite.getGlobalBounds().intersects(p->m_sprite.getGlobalBounds()) && !p->IsOnLadder()) {
-		sf::Vector2f movement(0.0f, 1.0f);
+	if (!b->m_sprite.getGlobalBounds().intersects(p->m_sprite.getGlobalBounds()) && !p->IsOnLadder() && !p->mIsJump) {
+		sf::Vector2f movement(0.0f, p->movementSpeed);
 
 		p->m_sprite.move(movement);
 	}

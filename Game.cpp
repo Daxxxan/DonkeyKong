@@ -4,7 +4,6 @@
 #include "EntityManager.h"
 #include "Player.h"
 
-const float Game::PlayerSpeed = 100.f;
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game()
@@ -15,11 +14,6 @@ Game::Game()
 	, mStatisticsText()
 	, mStatisticsUpdateTime()
 	, mStatisticsNumFrames(0)
-	, mIsMovingUp(false)
-	, mIsMovingDown(false)
-	, mIsMovingRight(false)
-	, mIsMovingLeft(false)
-	, mIsJump(false)
 {
 	mWindow.setFramerateLimit(160);
 
@@ -35,10 +29,10 @@ Game::Game()
 			_Block[i][j].setTexture(_TextureBlock);
 			_Block[i][j].setPosition(100.f + 70.f * (i + 1), 0.f + BLOCK_SPACE * (j + 1));
 
-			std::shared_ptr<Block> se = std::make_shared<Block>();
-			se->m_sprite = _Block[i][j];
-			se->m_size = _TextureBlock.getSize();
-			se->m_position = _Block[i][j].getPosition();
+			std::shared_ptr<Block> se = std::make_shared<Block>(_Block[i][j], _TextureBlock.getSize(), _Block[i][j].getPosition());
+			//se->m_sprite = _Block[i][j];
+			//se->m_size = _TextureBlock.getSize();
+			//se->m_position = _Block[i][j].getPosition();
 			EntityManager::m_Blocks.push_back(se);
 		}
 	}
@@ -52,10 +46,11 @@ Game::Game()
 		_Echelle[i].setTexture(_TextureEchelle);
 		_Echelle[i].setPosition(100.f + 70.f * (i + 1), 0.f + BLOCK_SPACE * (i + 1) + _sizeBlock.y);
 
-		std::shared_ptr<Ladder> se = std::make_shared<Ladder>();
-		se->m_sprite = _Echelle[i];
-		se->m_size = _TextureEchelle.getSize();
-		se->m_position = _Echelle[i].getPosition();
+		//std::shared_ptr<Ladder> se = std::make_shared<Ladder>();
+		std::shared_ptr<Ladder> se = std::make_shared<Ladder>(_Echelle[i], _TextureEchelle.getSize(), _Echelle[i].getPosition());
+		//se->m_sprite = _Echelle[i];
+		//se->m_size = _TextureEchelle.getSize();
+		//se->m_position = _Echelle[i].getPosition();
 		EntityManager::m_Ladders.push_back(se);
 	}
 
@@ -69,10 +64,11 @@ Game::Game()
 
 	spriteDk.setPosition(posDk);
 
-	std::shared_ptr<Dk> dk = std::make_shared<Dk>();
-	dk->m_sprite = spriteDk;
-	dk->m_size = textureDk.getSize();
-	dk->m_position = spriteDk.getPosition();
+	//std::shared_ptr<Dk> dk = std::make_shared<Dk>();
+	std::shared_ptr<Dk> dk = std::make_shared<Dk>(spriteDk, textureDk.getSize(), spriteDk.getPosition());
+	//dk->m_sprite = spriteDk;
+	//dk->m_size = textureDk.getSize();
+	//dk->m_position = spriteDk.getPosition();
 	EntityManager::m_Dk = dk;
 
 	// Draw Mario
@@ -86,10 +82,12 @@ Game::Game()
 
 	mPlayer.setPosition(posMario);
 
-	std::shared_ptr<Player> player = std::make_shared<Player>();
-	player->m_sprite = mPlayer;
-	player->m_size = mTexture.getSize();
-	player->m_position = mPlayer.getPosition();
+	//Draw player
+	//std::shared_ptr<Player> player = std::make_shared<Player>();
+	std::shared_ptr<Player> player = std::make_shared<Player>(mPlayer, mTexture.getSize(), mPlayer.getPosition());
+	//player->m_sprite = mPlayer;
+	//player->m_size = mTexture.getSize();
+	//player->m_position = mPlayer.getPosition();
 	EntityManager::m_Player = player;
 
 	// Draw Statistic Font 
@@ -127,6 +125,7 @@ void Game::processEvents()
 	sf::Event event;
 	while (mWindow.pollEvent(event))
 	{
+		
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
@@ -148,25 +147,10 @@ void Game::processEvents()
 
 void Game::update(sf::Time elapsedTime)
 {
-	sf::Vector2f movement(0.f, 0.f);
-	if (mIsMovingUp)
-		movement.y -= PlayerSpeed;
-	if (mIsMovingDown)
-		movement.y += PlayerSpeed;
-	if (mIsMovingLeft)
-		movement.x -= PlayerSpeed;
-	if (mIsMovingRight)
-		movement.x += PlayerSpeed;
-	if (mIsJump) {
-		if (!EntityManager::m_Player->IsOnLadder()) {
-			sf::Clock clock;
-			sf::Vector2f movement(0.f, 0.f);
-			movement.y -= 110.0;
-			EntityManager::m_Player->m_sprite.move(movement * elapsedTime.asSeconds());
-		}
+	if (EntityManager::m_Player->MarioCollideTheAboveBlock()) {
+		EntityManager::m_Player->mIsJump = false;
 	}
-
-	EntityManager::m_Player->m_sprite.move(movement * elapsedTime.asSeconds());
+	EntityManager::m_Player->Move();
 }
 
 void Game::render()
@@ -181,6 +165,7 @@ void Game::render()
 		}
 
 		mWindow.draw(block->m_sprite);
+		//mWindow.draw(block->m_border);
 	}
 
 	for (std::shared_ptr<Ladder> ladder : EntityManager::m_Ladders)
@@ -191,10 +176,13 @@ void Game::render()
 		}
 
 		mWindow.draw(ladder->m_sprite);
+		//mWindow.draw(ladder->m_border);
 	}
 
 	mWindow.draw(EntityManager::m_Player->m_sprite);
+	mWindow.draw(EntityManager::m_Player->m_border);
 	mWindow.draw(EntityManager::m_Dk->m_sprite);
+	mWindow.draw(EntityManager::m_Dk->m_border);
 
 	mWindow.draw(mStatisticsText);
 	mWindow.display();
@@ -227,45 +215,37 @@ void Game::updateStatistics(sf::Time elapsedTime)
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
+	printf("key : %d; isPressed : %d\n", key, isPressed);
+	std::shared_ptr<Player> player = EntityManager::m_Player;
 	if (key == sf::Keyboard::Up) {
-		if (EntityManager::m_Player->IsOnLadder()) {
-			mIsMovingUp = isPressed;
+		if (player->IsOnLadder()) {
+			player->mIsMovingUp = isPressed;
 		}
-		else if (!EntityManager::m_Player->IsOnBlock()) {
-			mIsMovingUp = isPressed;
+		else if (!player->IsOnBlock()) {
+			player->mIsMovingUp = isPressed;
 		} else {
-			mIsMovingUp = false;
+			player->mIsMovingUp = false;
 		}
 	}
 
-	if (key == sf::Keyboard::Left && EntityManager::m_Player->IsOnBlock()) {
-		mIsMovingLeft = isPressed;
+	if (key == sf::Keyboard::Left && player->IsOnBlock()) {
+		player->mIsMovingLeft = isPressed;
 	}
-	else {
-		mIsMovingLeft = false;
-	}
-	if (key == sf::Keyboard::Right && EntityManager::m_Player->IsOnBlock()) {
-		mIsMovingRight = isPressed;
-	}
-	else {
-		mIsMovingRight = false;
+	
+	if (key == sf::Keyboard::Right && player->IsOnBlock()) {
+		player->mIsMovingRight = isPressed;
 	}
 
-	if (key == sf::Keyboard::Down && (!EntityManager::m_Player->IsOnBlock() ||
-		EntityManager::m_Player->IsOnLadderAxis())) {
-		mIsMovingDown = isPressed;
-	}
-	else {
-		mIsMovingDown = false;
+	if (key == sf::Keyboard::Down && (!player->IsOnBlock() ||
+		player->IsOnLadderAxis())) {
+		player->mIsMovingDown = isPressed;
 	}
 
 	if (key == sf::Keyboard::Space)
 	{
-		if (EntityManager::m_Player->MarioCollideTheAboveBlock()) {
-			mIsJump = false;
-		}
-		else {
-			mIsJump = isPressed;
+		if (player->IsOnBlock())
+		{
+			player->mIsJump = true;
 		}
 	}
 }
