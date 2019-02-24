@@ -26,6 +26,7 @@ private:
 	void isPlayerDead();
 	bool allCoinGet();
 	void isPlayerGetCoin();
+	bool win = false;
 
 private:
 	static const float		PlayerSpeed;
@@ -36,6 +37,7 @@ private:
 	sf::Sprite	mPlayer;
 	sf::Font	mFont;
 	sf::Text	mStatisticsText;
+	sf::Text	mEndGame;
 	sf::Time	mStatisticsUpdateTime;
 
 	sf::Texture textureDk;

@@ -118,6 +118,10 @@ Game::Game()
 	mStatisticsText.setFont(mFont);
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(10);
+
+	//Draw endgame
+	mEndGame.setFont(mFont);
+	mEndGame.setPosition(120.f, 120.f);
 }
 
 void Game::run()
@@ -249,6 +253,15 @@ void Game::render()
 	mWindow.draw(EntityManager::m_Dk->m_border);
 
 	mWindow.draw(mStatisticsText);
+	if (win) {
+		mEndGame.setCharacterSize(160);
+		mEndGame.setString("You won!");
+	}
+	else if (EntityManager::m_Player->isDead) {
+		mEndGame.setCharacterSize(90);
+		mEndGame.setString("Mario is dead !");
+	}
+	mWindow.draw(mEndGame);
 	mWindow.display();
 }
 
@@ -335,7 +348,7 @@ void Game::isPlayerDead()
 		//printf("barrel.getGlobalBounds() : %lf\n", barrel->m_sprite.getGlobalBounds().left);
 		if (barrel->m_sprite.getGlobalBounds().intersects(EntityManager::m_Player->m_sprite.getGlobalBounds()))
 		{
-			printf("Game over, Mario is dead !\n");
+			EntityManager::m_Player->isDead = true;
 		}
 	}
 }
@@ -360,6 +373,7 @@ void Game::isPlayerGetCoin()
 	}
 
 	if (allCoinGet()) {
-		printf("Win !\n");
+		if(!EntityManager::m_Player->isDead)
+			win = true;
 	}
 }
