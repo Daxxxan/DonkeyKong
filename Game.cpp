@@ -364,7 +364,10 @@ void Game::render()
 	mWindow.draw(EntityManager::m_Dk->m_border);
 
 	mWindow.draw(mStatisticsText);
-	if (win) {
+	if (win && EntityManager::m_Player->invinsible) {
+		mEndGame.setCharacterSize(160);
+		mEndGame.setString("Cheater!");
+	} else if(win) {
 		mEndGame.setCharacterSize(160);
 		mEndGame.setString("You won!");
 	}
@@ -444,6 +447,11 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 			player->mIsJump = true;
 		}
 	}
+
+	if (key == sf::Keyboard::I)
+	{
+		player->invinsible = true;
+	}
 }
 
 void Game::isGameOver()
@@ -454,6 +462,8 @@ void Game::isGameOver()
 
 void Game::isPlayerDead()
 {
+	if (EntityManager::m_Player->invinsible) return;
+
 	for (std::shared_ptr<Barrel> barrel : EntityManager::m_Barrels)
 	{
 		//printf("barrel.getGlobalBounds() : %lf\n", barrel->m_sprite.getGlobalBounds().left);

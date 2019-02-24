@@ -17,6 +17,7 @@ public:
 	bool jump = false;
 	int jumpHeight;
 	bool isDead = false;
+	bool invinsible = false;
 
 public:
 	Player(sf::Sprite m_sprite, sf::Vector2u m_size, sf::Vector2f m_position);
