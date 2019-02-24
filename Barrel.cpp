@@ -41,7 +41,7 @@ void Barrel::moveAll()
 				barrel->moveDown = false;
 				if (!barrel->moveLeft && !barrel->moveRight)
 				{
-					barrel->moveLeft = std::rand() % 2;
+					barrel->moveLeft = (std::rand() % 5) != 0;
 					barrel->moveRight = !barrel->moveLeft;
 				}
 				break;

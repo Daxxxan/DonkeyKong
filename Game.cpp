@@ -27,7 +27,9 @@ Game::Game()
 		for (int j = 0; j < BLOCK_COUNT_Y; j++)
 		{
 			_Block[i][j].setTexture(_TextureBlock);
-			_Block[i][j].setPosition(100.f + 70.f * (i + 1), 0.f + BLOCK_SPACE * (j + 1));
+			float baseX = 0.f;
+			if ((j % 2) == 0) baseX += 140;
+			_Block[i][j].setPosition(baseX + 70.f * (i + 1), 0.f + BLOCK_SPACE * (j + 1));
 
 			std::shared_ptr<Block> se = std::make_shared<Block>(_Block[i][j], _TextureBlock.getSize(), _Block[i][j].getPosition());
 			//se->m_sprite = _Block[i][j];
@@ -44,7 +46,7 @@ Game::Game()
 	for (int i = 0; i < ECHELLE_COUNT; i++)
 	{
 		_Echelle[i].setTexture(_TextureEchelle);
-		_Echelle[i].setPosition(100.f + 70.f * (i + 1), 0.f + BLOCK_SPACE * (i + 1) + _sizeBlock.y);
+		_Echelle[i].setPosition(150.f + 70.f * (i + 1), 0.f + BLOCK_SPACE * (i + 1) + _sizeBlock.y);
 
 		//std::shared_ptr<Ladder> se = std::make_shared<Ladder>();
 		std::shared_ptr<Ladder> se = std::make_shared<Ladder>(_Echelle[i], _TextureEchelle.getSize(), _Echelle[i].getPosition());
@@ -59,7 +61,7 @@ Game::Game()
 	sizeDk = textureDk.getSize();
 	spriteDk.setTexture(textureDk);
 	sf::Vector2f posDk;
-	posDk.x = 600.f;
+	posDk.x = 650.f;
 	posDk.y = BLOCK_SPACE - sizeDk.y + 2;
 
 	spriteDk.setPosition(posDk);
@@ -77,7 +79,7 @@ Game::Game()
 	_sizeMario = mTexture.getSize();
 	mPlayer.setTexture(mTexture);
 	sf::Vector2f posMario;
-	posMario.x = 100.f + 70.f;
+	posMario.x = 150.f + 70.f;
 	posMario.y = BLOCK_SPACE * 5 - _sizeMario.y + 4 - 10;
 
 	mPlayer.setPosition(posMario);
