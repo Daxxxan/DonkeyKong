@@ -13,6 +13,7 @@ public:
 	bool mIsMovingRight;
 	bool mIsMovingLeft;
 	bool mIsJump;
+	bool move = false;
 	int jumpHeight;
 
 public:

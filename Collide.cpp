@@ -32,7 +32,7 @@ bool Collide::BottomFirstSpriteCollideTopSecondSprite(sf::Sprite firstSprite, sf
 	if (Collide::IsEqual(bottomFirstSprite, topSecondSprite)) {
 		return true;
 	}
-	else if (IsBetween(bottomFirstSprite, topSecondSprite - 5, topSecondSprite + 5)) {
+	else if (IsBetween(bottomFirstSprite, topSecondSprite, topSecondSprite + 5)) {
 		return true;
 	}
 	else {
@@ -146,8 +146,6 @@ void Collide::putOnTheFloor(std::shared_ptr<Player> p)
 			p->mIsMovingLeft = false;
 			p->mIsMovingRight = false;
 		}
-
-		printf("isOnBlock : %d\n", p->IsOnBlock());
 
 		if (p->IsOnBlock())
 		{

@@ -147,10 +147,16 @@ void Game::update(sf::Time elapsedTime)
 {
 	std::shared_ptr<Player> player = EntityManager::m_Player;
 
-	if (!player->IsOnBlock() && !player->mIsJump && !player->IsOnLadder())
+	if (!player->IsOnBlock() && !player->mIsJump && !player->IsOnLadder() && !player->move)
 	{
+		printf("Gravity\n\n");
 		Collide::putOnTheFloor(EntityManager::m_Player);
 		return;
+	}
+
+	if (player->IsOnLadder() && !player->IsOnBlock()) {
+		player->mIsMovingLeft = false;
+		player->mIsMovingRight = false;
 	}
 
 	if (player->jumpHeight > 30) {
@@ -227,11 +233,14 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	if (key == sf::Keyboard::Up) {
 		if (player->IsOnLadder()) {
 			player->mIsMovingUp = isPressed;
+			player->move = true;
 		}
 		else if (!player->IsOnBlock()) {
 			player->mIsMovingUp = isPressed;
+			player->move = true;
 		} else {
 			player->mIsMovingUp = false;
+			player->move = false;
 		}
 	}
 
@@ -245,7 +254,12 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 
 	if (key == sf::Keyboard::Down && (!player->IsOnBlock() ||
 		player->IsOnLadderAxis())) {
+		player->move = true;
 		player->mIsMovingDown = isPressed;
+	}
+	else if (player->IsOnBlock()) {
+		player->move = false;
+		player->mIsMovingDown = false;
 	}
 
 	if (key == sf::Keyboard::Space)

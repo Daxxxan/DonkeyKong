@@ -26,7 +26,7 @@ std::shared_ptr<Ladder> Player::TheClosestLadderBehind() {
 	for (std::shared_ptr<Ladder> ladder : EntityManager::m_Ladders) {
 		topLadder = ladder->m_sprite.getGlobalBounds().top;
 		bottomPlayer = EntityManager::m_Player->m_sprite.getGlobalBounds().top + EntityManager::m_Player->m_sprite.getGlobalBounds().height;
-
+		
 		if (topLadder > bottomPlayer) {
 			if (theClosestLadderBehindPlayer == NULL) {
 				theClosestLadderBehindPlayer = ladder;
