@@ -145,6 +145,7 @@ void Collide::putOnTheFloor(std::shared_ptr<Player> p)
 		{
 			p->mIsMovingLeft = false;
 			p->mIsMovingRight = false;
+			p->jump = false;
 		}
 
 		if (p->IsOnBlock())

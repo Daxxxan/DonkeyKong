@@ -146,21 +146,23 @@ void Game::processEvents()
 void Game::update(sf::Time elapsedTime)
 {
 	std::shared_ptr<Player> player = EntityManager::m_Player;
-
-	if (!player->IsOnBlock() && !player->mIsJump && !player->IsOnLadder() && !player->move)
+	if (!player->IsOnBlock() && !player->mIsJump && !player->disabledGravity)
 	{
-		printf("Gravity\n\n");
-		Collide::putOnTheFloor(EntityManager::m_Player);
+		if (!player->IsOnLadder() || (player->IsOnLadder() && player->jump)) {
+			Collide::putOnTheFloor(EntityManager::m_Player);
+		}
 		return;
-	}
-
-	if (player->IsOnLadder() && !player->IsOnBlock()) {
-		player->mIsMovingLeft = false;
-		player->mIsMovingRight = false;
 	}
 
 	if (player->jumpHeight > 30) {
 		player->mIsJump = false;
+	}
+
+	if (!player->jump) {
+		if (player->IsOnLadder() && !player->IsOnBlock()) {
+			player->mIsMovingLeft = false;
+			player->mIsMovingRight = false;
+		}
 	}
 
 	player->Move();
@@ -228,19 +230,18 @@ void Game::updateStatistics(sf::Time elapsedTime)
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	printf("key : %d; isPressed : %d\n", key, isPressed);
 	std::shared_ptr<Player> player = EntityManager::m_Player;
 	if (key == sf::Keyboard::Up) {
 		if (player->IsOnLadder()) {
 			player->mIsMovingUp = isPressed;
-			player->move = true;
+			player->disabledGravity = true;
 		}
 		else if (!player->IsOnBlock()) {
 			player->mIsMovingUp = isPressed;
-			player->move = true;
+			player->disabledGravity = true;
 		} else {
 			player->mIsMovingUp = false;
-			player->move = false;
+			player->disabledGravity = false;
 		}
 	}
 
@@ -254,11 +255,11 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 
 	if (key == sf::Keyboard::Down && (!player->IsOnBlock() ||
 		player->IsOnLadderAxis())) {
-		player->move = true;
+		player->disabledGravity = true;
 		player->mIsMovingDown = isPressed;
 	}
 	else if (player->IsOnBlock()) {
-		player->move = false;
+		player->disabledGravity = false;
 		player->mIsMovingDown = false;
 	}
 
@@ -266,6 +267,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 	{
 		if (player->IsOnBlock())
 		{
+			player->jump = true;
 			player->mIsJump = true;
 		}
 	}
