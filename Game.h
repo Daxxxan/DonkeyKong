@@ -46,12 +46,15 @@ private:
 
 	std::size_t	mStatisticsNumFrames;
 
-	sf::Texture	_TextureEchelle;
-	sf::Sprite	_Echelle[ECHELLE_COUNT];
+	sf::Texture	_TextureLadder;
+	//sf::Sprite	_Echelle[ECHELLE_COUNT];
+	sf::Sprite	_Ladder;
 	sf::Texture	_TextureCoin;
-	sf::Sprite	_Coin[COIN_COUNT];
+	//sf::Sprite	_Coin[COIN_COUNT];
+	sf::Sprite	_Coin;
 	sf::Texture	_TextureBlock;
-	sf::Sprite	_Block[BLOCK_COUNT_X][BLOCK_COUNT_Y];
+	//sf::Sprite	_Block[BLOCK_COUNT_X][BLOCK_COUNT_Y];
+	sf::Sprite	_Block;
 	sf::Texture	_TextureWeapon;
 	sf::Sprite	_Weapon;
 	sf::Vector2u _sizeBlock;

@@ -4,6 +4,10 @@
 #include "EntityManager.h"
 #include "Player.h"
 #include "Coin.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
+
+using json = nlohmann::json;
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
@@ -18,11 +22,98 @@ Game::Game()
 {
 	mWindow.setFramerateLimit(160);
 
-	// Draw blocks
+	//Define level json
+	json level = {
+		{
+			"player", {
+				{"x", 80},
+				{"y", 500}
+			}
+		},
+		{
+			"dk", {
+				{"x", 650},
+				{"y", 41}
+			}
+		},
+		{
+			"blocks" , {
+				{{"x", 210}, {"y", 110}},
+				{{"x", 280}, {"y", 110}},
+				{{"x", 350}, {"y", 110}},
+				{{"x", 420}, {"y", 110}},
+				{{"x", 490}, {"y", 110}},
+				{{"x", 560}, {"y", 110}},
+				{{"x", 630}, {"y", 110}},
+				{{"x", 700}, {"y", 110}},
 
+				{{"x",  70}, {"y", 220}},
+				{{"x", 140}, {"y", 220}},
+				{{"x", 210}, {"y", 220}},
+				{{"x", 280}, {"y", 220}},
+				{{"x", 350}, {"y", 220}},
+
+				{{"x", 210}, {"y", 330}},
+				{{"x", 280}, {"y", 330}},
+				{{"x", 350}, {"y", 330}},
+				{{"x", 420}, {"y", 330}},
+				{{"x", 490}, {"y", 330}},
+
+				{{"x",  70}, {"y", 440}},
+				{{"x", 140}, {"y", 440}},
+				{{"x", 210}, {"y", 440}},
+				{{"x", 280}, {"y", 440}},
+
+				{{"x", 490}, {"y", 440}},
+				{{"x", 560}, {"y", 440}},
+				{{"x", 630}, {"y", 440}},
+				{{"x", 700}, {"y", 440}},
+
+				{{"x",  70}, {"y", 550}},
+				{{"x", 140}, {"y", 550}},
+				{{"x", 210}, {"y", 550}},
+				{{"x", 280}, {"y", 550}},
+				{{"x", 350}, {"y", 550}},
+				{{"x", 420}, {"y", 550}},
+				{{"x", 490}, {"y", 550}},
+				{{"x", 560}, {"y", 550}},
+				{{"x", 630}, {"y", 550}},
+				{{"x", 700}, {"y", 550}}
+			},
+		},
+		{
+			"ladders", {
+				{{"x", 280}, {"y", 143}},
+				{{"x", 350}, {"y", 253}},
+				{{"x", 250}, {"y", 363}},
+				{{"x", 500}, {"y", 363}},
+				{{"x", 600}, {"y", 473}}
+			}
+		},
+		{
+			"coins", {
+				{{"x",  90}, {"y", 180}},
+				{{"x",  80}, {"y", 400}},
+				{{"x", 700}, {"y", 400}},
+				{{"x", 450}, {"y", 510}}
+			}
+		}
+	};
+
+	// Draw blocks
 	_TextureBlock.loadFromFile("Media/Textures/Block.png");
 	_sizeBlock = _TextureBlock.getSize();
+	_Block.setTexture(_TextureBlock);
 
+	auto blocks = level["blocks"].get<std::vector<json>>();
+	for (json block : blocks)
+	{
+		_Block.setPosition(block["x"].get<float>(), block["y"].get<float>());
+		std::shared_ptr<Block> sb = std::make_shared<Block>(_Block, _TextureBlock.getSize(), _Block.getPosition());
+		EntityManager::m_Blocks.push_back(sb);
+	}
+
+	/*
 	for (int i = 0; i < BLOCK_COUNT_X; i++)
 	{
 		for (int j = 0; j < BLOCK_COUNT_Y; j++)
@@ -38,12 +129,21 @@ Game::Game()
 			//se->m_position = _Block[i][j].getPosition();
 			EntityManager::m_Blocks.push_back(se);
 		}
-	}
+	}*/
 
 	// Draw Echelles
 
-	_TextureEchelle.loadFromFile("Media/Textures/Echelle.png");
+	_TextureLadder.loadFromFile("Media/Textures/Echelle.png");
+	_Ladder.setTexture(_TextureLadder);
 
+	auto ladders = level["ladders"].get<std::vector<json>>();
+	for (json ladder : ladders)
+	{
+		_Ladder.setPosition(ladder["x"].get<float>(), ladder["y"].get<float>());
+		std::shared_ptr<Ladder> sl = std::make_shared<Ladder>(_Ladder, _TextureLadder.getSize(), _Ladder.getPosition());
+		EntityManager::m_Ladders.push_back(sl);
+	}
+	/*
 	for (int i = 0; i < ECHELLE_COUNT; i++)
 	{
 		_Echelle[i].setTexture(_TextureEchelle);
@@ -55,12 +155,21 @@ Game::Game()
 		//se->m_size = _TextureEchelle.getSize();
 		//se->m_position = _Echelle[i].getPosition();
 		EntityManager::m_Ladders.push_back(se);
-	}
+	}*/
 	
 	// Draw Coin
 
 	_TextureCoin.loadFromFile("Media/Textures/Piece.PNG");
+	_Coin.setTexture(_TextureCoin);
 
+	auto coins = level["coins"].get<std::vector<json>>();
+	for (json coin : coins)
+	{
+		_Coin.setPosition(coin["x"].get<float>(), coin["y"].get<float>());
+		std::shared_ptr<Coin> sc = std::make_shared<Coin>(_Coin, _TextureCoin.getSize(), _Coin.getPosition());
+		EntityManager::m_Coin.push_back(sc);
+	}
+	/*
 	for (int i = 0; i < ECHELLE_COUNT; i++)
 	{
 		_Coin[i].setTexture(_TextureCoin);
@@ -68,15 +177,15 @@ Game::Game()
 
 		std::shared_ptr<Coin> se = std::make_shared<Coin>(_Coin[i], _TextureCoin.getSize(), _Coin[i].getPosition());
 		EntityManager::m_Coin.push_back(se);
-	}
+	}*/
 
 	//Draw Donkey Kong
 	textureDk.loadFromFile("Media/Textures/dk.png");
 	sizeDk = textureDk.getSize();
 	spriteDk.setTexture(textureDk);
 	sf::Vector2f posDk;
-	posDk.x = 650.f;
-	posDk.y = BLOCK_SPACE - sizeDk.y + 2;
+	posDk.x = level["dk"]["x"].get<float>();
+	posDk.y = level["dk"]["y"].get<float>();
 
 	spriteDk.setPosition(posDk);
 
@@ -93,8 +202,10 @@ Game::Game()
 	_sizeMario = mTexture.getSize();
 	mPlayer.setTexture(mTexture);
 	sf::Vector2f posMario;
-	posMario.x = 150.f + 70.f;
-	posMario.y = BLOCK_SPACE * 5 - _sizeMario.y + 4 - 10;
+	//posMario.x = 150.f + 70.f;
+	//posMario.y = BLOCK_SPACE * 5 - _sizeMario.y + 4 - 10;
+	posMario.x = level["player"]["x"].get<float>();
+	posMario.y = level["player"]["y"].get<float>();
 
 	mPlayer.setPosition(posMario);
 
