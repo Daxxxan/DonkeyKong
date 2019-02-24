@@ -154,3 +154,8 @@ void Collide::putOnTheFloor(std::shared_ptr<Player> p)
 		}
 	//}
 }
+
+void Collide::putOnTheFloor(std::shared_ptr<Barrel> b)
+{
+	b->moveDown = true;
+}

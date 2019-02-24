@@ -119,6 +119,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Barrel.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Collide.cpp" />
     <ClCompile Include="Dk.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="StringHelpers.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Barrel.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Collide.h" />
     <ClInclude Include="Dk.h" />
@@ -144,6 +146,7 @@
     <ClInclude Include="StringHelpers.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Media\Textures\barrel.png" />
     <Image Include="Media\Textures\Block.png" />
     <Image Include="Media\Textures\dk.png" />
     <Image Include="Media\Textures\Echelle.PNG" />

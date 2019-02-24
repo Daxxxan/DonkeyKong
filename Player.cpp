@@ -61,7 +61,6 @@ bool Player::IsOnLadder() {
 bool Player::IsOnLadderAxis()
 {
 	std::shared_ptr<Ladder> theClosestLadderBehindPlayer = Player::TheClosestLadderBehind();
-	sf::Vector2f position = theClosestLadderBehindPlayer->m_position;
 
 	if (theClosestLadderBehindPlayer) {
 		if (Collide::FirstSpriteBetweenRigtAndLeftSecondSprite(EntityManager::m_Player->m_sprite,

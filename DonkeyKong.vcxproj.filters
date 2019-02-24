@@ -48,6 +48,9 @@
     <ClCompile Include="Dk.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Barrel.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -80,6 +83,9 @@
     <ClInclude Include="Dk.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Barrel.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Media\Textures\Block.png">
@@ -110,6 +116,9 @@
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="Media\Textures\dk.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Media\Textures\barrel.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>

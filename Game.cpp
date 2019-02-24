@@ -90,6 +90,11 @@ Game::Game()
 	//player->m_position = mPlayer.getPosition();
 	EntityManager::m_Player = player;
 
+	//Prepare Barrel drawing
+	dk->_TextureBarrel.loadFromFile("Media/Textures/barrel.png");
+	dk->_sizeBarrel = dk->_TextureBarrel.getSize();
+	dk->_Barrel.setTexture(dk->_TextureBarrel);
+
 	// Draw Statistic Font 
 
 	mFont.loadFromFile("Media/Sansation.ttf");
@@ -170,6 +175,8 @@ void Game::update(sf::Time elapsedTime)
 	}
 
 	player->Move();
+	EntityManager::m_Dk->spawnBarrel();
+	Barrel::moveAll();
 }
 
 void Game::render()
@@ -195,6 +202,17 @@ void Game::render()
 		}
 
 		mWindow.draw(ladder->m_sprite);
+		//mWindow.draw(ladder->m_border);
+	}
+
+	for (std::shared_ptr<Barrel> barrel : EntityManager::m_Barrels)
+	{
+		if (barrel->m_enabled == false)
+		{
+			continue;
+		}
+
+		mWindow.draw(barrel->m_sprite);
 		//mWindow.draw(ladder->m_border);
 	}
 
@@ -235,6 +253,7 @@ void Game::updateStatistics(sf::Time elapsedTime)
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
 	std::shared_ptr<Player> player = EntityManager::m_Player;
+	printf("isOnABlock() : %d\n", player->IsOnBlock());
 	if (key == sf::Keyboard::Up) {
 		if (player->IsOnLadder()) {
 			player->mIsMovingUp = isPressed;

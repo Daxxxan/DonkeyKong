@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "Block.h"
 class Player;
+class Barrel;
 
 class Collide
 {
@@ -18,6 +19,7 @@ public:
 	static bool FirstSpriteBetweenTopAndBottomSecondSprite(sf::Sprite firstSprite, sf::Sprite secondSprite);
 	static bool BottomFirstSpriteBetweenTopAndBottomSecondSprite(sf::Sprite firstSprite, sf::Sprite secondSprite);
 	static void putOnTheFloor(std::shared_ptr<Player> p);
+	static void putOnTheFloor(std::shared_ptr<Barrel> b);
 
 private:
 	static bool IsEqual(float firstNumber, float secondNumber);
