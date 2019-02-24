@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "EntityManager.h"
 #include "Player.h"
+#include "Coin.h"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
@@ -54,6 +55,19 @@ Game::Game()
 		//se->m_size = _TextureEchelle.getSize();
 		//se->m_position = _Echelle[i].getPosition();
 		EntityManager::m_Ladders.push_back(se);
+	}
+	
+	// Draw Coin
+
+	_TextureCoin.loadFromFile("Media/Textures/Piece.PNG");
+
+	for (int i = 0; i < ECHELLE_COUNT; i++)
+	{
+		_Coin[i].setTexture(_TextureCoin);
+		_Coin[i].setPosition(130.f * (i + 1), 0.f + BLOCK_SPACE * (i + 2) - _sizeBlock.y - 2);
+
+		std::shared_ptr<Coin> se = std::make_shared<Coin>(_Coin[i], _TextureCoin.getSize(), _Coin[i].getPosition());
+		EntityManager::m_Coin.push_back(se);
 	}
 
 	//Draw Donkey Kong
@@ -206,6 +220,16 @@ void Game::render()
 
 		mWindow.draw(ladder->m_sprite);
 		//mWindow.draw(ladder->m_border);
+	}
+
+	for (std::shared_ptr<Coin> coin : EntityManager::m_Coin)
+	{
+		if (coin->m_enabled == false)
+		{
+			continue;
+		}
+
+		mWindow.draw(coin->m_sprite);
 	}
 
 	for (std::shared_ptr<Barrel> barrel : EntityManager::m_Barrels)

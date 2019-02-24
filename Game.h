@@ -2,6 +2,7 @@
 #include "pch.h"
 
 #define ECHELLE_COUNT 4
+#define COIN_COUNT 4
 #define BLOCK_COUNT_X 8
 #define BLOCK_COUNT_Y 5
 #define BLOCK_SPACE 110.f
@@ -43,6 +44,8 @@ private:
 
 	sf::Texture	_TextureEchelle;
 	sf::Sprite	_Echelle[ECHELLE_COUNT];
+	sf::Texture	_TextureCoin;
+	sf::Sprite	_Coin[COIN_COUNT];
 	sf::Texture	_TextureBlock;
 	sf::Sprite	_Block[BLOCK_COUNT_X][BLOCK_COUNT_Y];
 	sf::Texture	_TextureWeapon;

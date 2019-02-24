@@ -121,6 +121,7 @@
   <ItemGroup>
     <ClCompile Include="Barrel.cpp" />
     <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collide.cpp" />
     <ClCompile Include="Dk.cpp" />
     <ClCompile Include="DonkeyKong.cpp" />
@@ -135,6 +136,7 @@
   <ItemGroup>
     <ClInclude Include="Barrel.h" />
     <ClInclude Include="Block.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="Collide.h" />
     <ClInclude Include="Dk.h" />
     <ClInclude Include="Entity.h" />
