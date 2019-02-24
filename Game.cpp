@@ -163,6 +163,10 @@ void Game::update(sf::Time elapsedTime)
 			player->mIsMovingLeft = false;
 			player->mIsMovingRight = false;
 		}
+		if (player->IsOnLadderAxis() && player->mIsMovingDown) {
+			player->mIsMovingLeft = false;
+			player->mIsMovingRight = false;
+		}
 	}
 
 	player->Move();
