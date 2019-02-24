@@ -126,11 +126,30 @@ std::shared_ptr<Block> Collide::GetTheNearestBlockUnderPlayer(std::shared_ptr<Pl
 /* Put a Player on the floor */
 void Collide::putOnTheFloor(std::shared_ptr<Player> p)
 {
-	std::shared_ptr<Block> b = Collide::GetTheNearestBlockUnderPlayer(p);
+	//std::shared_ptr<Block> b = Collide::GetTheNearestBlockUnderPlayer(p);
 
-	if (!b->m_sprite.getGlobalBounds().intersects(p->m_sprite.getGlobalBounds()) && !p->IsOnLadder() && !p->mIsJump) {
-		sf::Vector2f movement(0.0f, p->movementSpeed);
+	//if (!b->m_sprite.getGlobalBounds().intersects(p->m_sprite.getGlobalBounds()) && !p->IsOnLadder() && !p->mIsJump) {
+		//sf::Vector2f movement(0.0f, p->movementSpeed);
 
-		p->m_sprite.move(movement);
-	}
+		//p->m_sprite.move(movement);
+		
+		p->mIsMovingDown = true;
+		p->Move();
+
+		if (p->jumpHeight > 0)
+		{
+			p->jumpHeight--;
+		}
+
+		if (p->jumpHeight == 0)
+		{
+			p->mIsMovingLeft = false;
+			p->mIsMovingRight = false;
+		}
+
+		if (p->IsOnBlock())
+		{
+			p->mIsMovingDown = false;
+		}
+	//}
 }

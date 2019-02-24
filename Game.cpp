@@ -78,7 +78,7 @@ Game::Game()
 	mPlayer.setTexture(mTexture);
 	sf::Vector2f posMario;
 	posMario.x = 100.f + 70.f;
-	posMario.y = BLOCK_SPACE * 5 - _sizeMario.y + 4;
+	posMario.y = BLOCK_SPACE * 5 - _sizeMario.y + 4 - 10;
 
 	mPlayer.setPosition(posMario);
 
@@ -141,16 +141,23 @@ void Game::processEvents()
 			break;
 		}
 	}
-
-	Collide::putOnTheFloor(EntityManager::m_Player);
 }
 
 void Game::update(sf::Time elapsedTime)
 {
-	if (EntityManager::m_Player->MarioCollideTheAboveBlock()) {
-		EntityManager::m_Player->mIsJump = false;
+	std::shared_ptr<Player> player = EntityManager::m_Player;
+
+	if (!player->IsOnBlock() && !player->mIsJump && !player->IsOnLadder())
+	{
+		Collide::putOnTheFloor(EntityManager::m_Player);
+		return;
 	}
-	EntityManager::m_Player->Move();
+
+	if (player->jumpHeight > 20) {
+		player->mIsJump = false;
+	}
+
+	player->Move();
 }
 
 void Game::render()
