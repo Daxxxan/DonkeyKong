@@ -38,12 +38,12 @@ void Barrel::moveAll()
 			if (block->m_sprite.getGlobalBounds().intersects(barrel->m_sprite.getGlobalBounds()))
 			{
 				isOnABlock = true;
-				barrel->moveDown = false;
 				if (!barrel->moveLeft && !barrel->moveRight)
 				{
 					barrel->moveLeft = (std::rand() % 5) != 0;
 					barrel->moveRight = !barrel->moveLeft;
 				}
+				barrel->move();
 				break;
 			}
 		}
@@ -52,7 +52,5 @@ void Barrel::moveAll()
 		{
 			Collide::putOnTheFloor(barrel);
 		}
-
-		barrel->move();
 	}
 }

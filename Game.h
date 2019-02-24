@@ -21,6 +21,9 @@ private:
 	void updateStatistics(sf::Time elapsedTime);
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
+	void isGameOver();
+	void isPlayerDead();
+
 private:
 	static const float		PlayerSpeed;
 	static const sf::Time	TimePerFrame;

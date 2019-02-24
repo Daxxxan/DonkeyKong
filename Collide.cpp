@@ -158,4 +158,15 @@ void Collide::putOnTheFloor(std::shared_ptr<Player> p)
 void Collide::putOnTheFloor(std::shared_ptr<Barrel> b)
 {
 	b->moveDown = true;
+	b->move();
+	
+	for (std::shared_ptr<Block> block : EntityManager::m_Blocks)
+	{
+		if (block->m_sprite.getGlobalBounds().intersects(b->m_sprite.getGlobalBounds()))
+		{
+			b->moveLeft = (std::rand() % 5) == 0 ? b->moveLeft : !b->moveLeft;
+			b->moveRight = !b->moveLeft;
+			b->moveDown = false;
+		}
+	}
 }

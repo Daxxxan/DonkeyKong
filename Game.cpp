@@ -179,6 +179,7 @@ void Game::update(sf::Time elapsedTime)
 	player->Move();
 	EntityManager::m_Dk->spawnBarrel();
 	Barrel::moveAll();
+	isGameOver();
 }
 
 void Game::render()
@@ -294,6 +295,23 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 		{
 			player->jump = true;
 			player->mIsJump = true;
+		}
+	}
+}
+
+void Game::isGameOver()
+{
+	isPlayerDead();
+}
+
+void Game::isPlayerDead()
+{
+	for (std::shared_ptr<Barrel> barrel : EntityManager::m_Barrels)
+	{
+		//printf("barrel.getGlobalBounds() : %lf\n", barrel->m_sprite.getGlobalBounds().left);
+		if (barrel->m_sprite.getGlobalBounds().intersects(EntityManager::m_Player->m_sprite.getGlobalBounds()))
+		{
+			printf("Game over, Mario is dead !\n");
 		}
 	}
 }
