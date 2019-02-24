@@ -61,6 +61,8 @@ bool Player::IsOnLadder() {
 bool Player::IsOnLadderAxis()
 {
 	std::shared_ptr<Ladder> theClosestLadderBehindPlayer = Player::TheClosestLadderBehind();
+	sf::Vector2f position = theClosestLadderBehindPlayer->m_position;
+
 	if (theClosestLadderBehindPlayer) {
 		if (Collide::FirstSpriteBetweenRigtAndLeftSecondSprite(EntityManager::m_Player->m_sprite,
 			theClosestLadderBehindPlayer->m_sprite)) {
@@ -104,8 +106,8 @@ bool Player::MarioCollideTheAboveBlock() {
 
 void Player::Move()
 {
-	printf("Player direction : [up : %d, down : %d, left : %d, right : %d, jump : %d, jumpHeight : %d]\n", 
-		mIsMovingUp, mIsMovingDown, mIsMovingLeft, mIsMovingRight, mIsJump, jumpHeight);
+	//printf("Player direction : [up : %d, down : %d, left : %d, right : %d, jump : %d, jumpHeight : %d]\n", 
+		//mIsMovingUp, mIsMovingDown, mIsMovingLeft, mIsMovingRight, mIsJump, jumpHeight);
 	sf::Vector2f movement(0.f, 0.f);
 	if (mIsMovingUp)
 		movement.y -= movementSpeed;
@@ -116,10 +118,10 @@ void Player::Move()
 	if (mIsMovingRight)
 		movement.x += movementSpeed;
 	if (mIsJump) {
-		if (!EntityManager::m_Player->IsOnLadder()) {
+		//if (!EntityManager::m_Player->IsOnLadder()) {
 			movement.y -= movementSpeed;
 			this->jumpHeight++;
-		}
+		//}
 	}
 
 	EntityManager::m_Player->m_sprite.move(movement);

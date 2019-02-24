@@ -153,7 +153,7 @@ void Game::update(sf::Time elapsedTime)
 		return;
 	}
 
-	if (player->jumpHeight > 20) {
+	if (player->jumpHeight > 30) {
 		player->mIsJump = false;
 	}
 
