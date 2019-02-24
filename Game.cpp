@@ -175,7 +175,7 @@ void Game::update(sf::Time elapsedTime)
 		return;
 	}
 
-	if (player->jumpHeight > 30) {
+	if (player->jumpHeight > 50) {
 		player->mIsJump = false;
 	}
 
@@ -280,7 +280,6 @@ void Game::updateStatistics(sf::Time elapsedTime)
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
 	std::shared_ptr<Player> player = EntityManager::m_Player;
-	printf("isOnABlock() : %d\n", player->IsOnBlock());
 	if (key == sf::Keyboard::Up) {
 		if (player->IsOnLadder()) {
 			player->mIsMovingUp = isPressed;
@@ -326,6 +325,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 void Game::isGameOver()
 {
 	isPlayerDead();
+	isPlayerGetCoin();
 }
 
 void Game::isPlayerDead()
@@ -337,5 +337,29 @@ void Game::isPlayerDead()
 		{
 			printf("Game over, Mario is dead !\n");
 		}
+	}
+}
+
+bool Game::allCoinGet() {
+	for (std::shared_ptr<Coin> coin : EntityManager::m_Coin)
+	{
+		if (coin->m_enabled) {
+			return false;
+		}
+	}
+	return true;
+}
+
+void Game::isPlayerGetCoin()
+{
+	for (int i = 0; i < EntityManager::m_Coin.size(); i++) {
+		if (EntityManager::m_Coin[i]->m_sprite.getGlobalBounds().intersects(EntityManager::m_Player->m_sprite.getGlobalBounds()))
+		{
+			EntityManager::m_Coin[i]->m_enabled = false;
+		}
+	}
+
+	if (allCoinGet()) {
+		printf("Win !\n");
 	}
 }

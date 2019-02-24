@@ -24,6 +24,8 @@ private:
 
 	void isGameOver();
 	void isPlayerDead();
+	bool allCoinGet();
+	void isPlayerGetCoin();
 
 private:
 	static const float		PlayerSpeed;
