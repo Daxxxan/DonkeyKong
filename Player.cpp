@@ -105,8 +105,6 @@ bool Player::MarioCollideTheAboveBlock() {
 
 void Player::Move()
 {
-	//printf("Player direction : [up : %d, down : %d, left : %d, right : %d, jump : %d, jumpHeight : %d]\n", 
-		//mIsMovingUp, mIsMovingDown, mIsMovingLeft, mIsMovingRight, mIsJump, jumpHeight);
 	sf::Vector2f movement(0.f, 0.f);
 	if (mIsMovingUp)
 		movement.y -= movementSpeed;
@@ -117,10 +115,8 @@ void Player::Move()
 	if (mIsMovingRight)
 		movement.x += movementSpeed;
 	if (mIsJump) {
-		//if (!EntityManager::m_Player->IsOnLadder()) {
-			movement.y -= movementSpeed;
-			this->jumpHeight++;
-		//}
+		movement.y -= movementSpeed;
+		this->jumpHeight++;
 	}
 
 	EntityManager::m_Player->m_sprite.move(movement);
