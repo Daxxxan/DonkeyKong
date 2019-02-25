@@ -15,92 +15,120 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\DonkeyKong.cpp">
+    <ClCompile Include="DonkeyKong.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\Entity.cpp">
+    <ClCompile Include="Entity.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\EntityManager.cpp">
+    <ClCompile Include="EntityManager.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\Game.cpp">
+    <ClCompile Include="Game.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\pch.cpp">
+    <ClCompile Include="pch.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\StringHelpers.cpp">
+    <ClCompile Include="StringHelpers.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\Block.cpp">
+    <ClCompile Include="Player.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\Ladder.cpp">
+    <ClCompile Include="Block.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\Player.cpp">
+    <ClCompile Include="Ladder.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Collide.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Dk.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Barrel.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Entity.h">
+    <ClInclude Include="Entity.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\EntityManager.h">
+    <ClInclude Include="EntityManager.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game.h">
+    <ClInclude Include="Game.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\pch.h">
+    <ClInclude Include="pch.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\StringHelpers.h">
+    <ClInclude Include="StringHelpers.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\Block.h">
+    <ClInclude Include="Player.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\Ladder.h">
+    <ClInclude Include="Block.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
-    <ClInclude Include="..\Player.h">
+    <ClInclude Include="Ladder.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Collide.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Dk.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Barrel.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Media\Textures\Block.png">
+    <Image Include="Media\Textures\Block.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="..\Media\Textures\Echelle.PNG">
+    <Image Include="Media\Textures\Echelle.PNG">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="..\Media\Textures\Mario.PNG">
+    <Image Include="Media\Textures\Mario.PNG">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="..\Media\Textures\Mario_small.png">
+    <Image Include="Media\Textures\Mario1.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="..\Media\Textures\Mario_small_transparent.png">
+    <Image Include="Media\Textures\Mario2.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="..\Media\Textures\Mario1.png">
+    <Image Include="Media\Textures\Mario_small.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="..\Media\Textures\Mario2.png">
+    <Image Include="Media\Textures\Mario_small_transparent.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="..\Media\Textures\Piece.PNG">
+    <Image Include="Media\Textures\Piece.PNG">
       <Filter>Fichiers de ressources</Filter>
     </Image>
-    <Image Include="..\Media\Textures\tumblr_mkcq5fge0w1s9677oo1_r1_500.gif">
+    <Image Include="Media\Textures\tumblr_mkcq5fge0w1s9677oo1_r1_500.gif">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Media\Textures\dk.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Media\Textures\barrel.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="..\Media\Sansation.ttf">
-      <Filter>Fichiers de ressources</Filter>
-    </Font>
+    <Font Include="Media\Sansation.ttf" />
   </ItemGroup>
 </Project>

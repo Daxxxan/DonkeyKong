@@ -1,9 +1,5 @@
 #pragma once
-
-#define ECHELLE_COUNT 4
-#define BLOCK_COUNT_X 8
-#define BLOCK_COUNT_Y 5
-#define BLOCK_SPACE 110.f
+#include "pch.h"
 
 class Game
 {
@@ -20,6 +16,12 @@ private:
 	void updateStatistics(sf::Time elapsedTime);
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
+	void isGameOver();
+	void isPlayerDead();
+	bool allCoinGet();
+	void isPlayerGetCoin();
+	bool win = false;
+
 private:
 	static const float		PlayerSpeed;
 	static const sf::Time	TimePerFrame;
@@ -29,18 +31,21 @@ private:
 	sf::Sprite	mPlayer;
 	sf::Font	mFont;
 	sf::Text	mStatisticsText;
+	sf::Text	mEndGame;
 	sf::Time	mStatisticsUpdateTime;
 
-	std::size_t	mStatisticsNumFrames;
-	bool mIsMovingUp;
-	bool mIsMovingDown;
-	bool mIsMovingRight;
-	bool mIsMovingLeft;
+	sf::Texture textureDk;
+	sf::Vector2u sizeDk;
+	sf::Sprite	spriteDk;
 
-	sf::Texture	_TextureEchelle;
-	sf::Sprite	_Echelle[ECHELLE_COUNT];
+	std::size_t	mStatisticsNumFrames;
+
+	sf::Texture	_TextureLadder;
+	sf::Sprite	_Ladder;
+	sf::Texture	_TextureCoin;
+	sf::Sprite	_Coin;
 	sf::Texture	_TextureBlock;
-	sf::Sprite	_Block[BLOCK_COUNT_X][BLOCK_COUNT_Y];
+	sf::Sprite	_Block;
 	sf::Texture	_TextureWeapon;
 	sf::Sprite	_Weapon;
 	sf::Vector2u _sizeBlock;

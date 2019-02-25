@@ -2,8 +2,13 @@
 #include "StringHelpers.h"
 #include "Game.h"
 #include "EntityManager.h"
+#include "Player.h"
+#include "Coin.h"
+#include <nlohmann/json.hpp>
+#include <fstream>
 
-const float Game::PlayerSpeed = 100.f;
+using json = nlohmann::json;
+
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game()
@@ -14,76 +19,166 @@ Game::Game()
 	, mStatisticsText()
 	, mStatisticsUpdateTime()
 	, mStatisticsNumFrames(0)
-	, mIsMovingUp(false)
-	, mIsMovingDown(false)
-	, mIsMovingRight(false)
-	, mIsMovingLeft(false)
 {
 	mWindow.setFramerateLimit(160);
 
-	// Draw blocks
+	//Define level json
+	json level = {
+		{
+			"player", {
+				{"x", 80},
+				{"y", 500}
+			}
+		},
+		{
+			"dk", {
+				{"x", 650},
+				{"y", 41}
+			}
+		},
+		{
+			"blocks" , {
+				{{"x", 210}, {"y", 110}},
+				{{"x", 280}, {"y", 110}},
+				{{"x", 350}, {"y", 110}},
+				{{"x", 420}, {"y", 110}},
+				{{"x", 490}, {"y", 110}},
+				{{"x", 560}, {"y", 110}},
+				{{"x", 630}, {"y", 110}},
+				{{"x", 700}, {"y", 110}},
 
+				{{"x",  70}, {"y", 220}},
+				{{"x", 140}, {"y", 220}},
+				{{"x", 210}, {"y", 220}},
+				{{"x", 280}, {"y", 220}},
+				{{"x", 350}, {"y", 220}},
+
+				{{"x", 210}, {"y", 330}},
+				{{"x", 280}, {"y", 330}},
+				{{"x", 350}, {"y", 330}},
+				{{"x", 420}, {"y", 330}},
+				{{"x", 490}, {"y", 330}},
+
+				{{"x",  70}, {"y", 440}},
+				{{"x", 140}, {"y", 440}},
+				{{"x", 210}, {"y", 440}},
+				{{"x", 280}, {"y", 440}},
+
+				{{"x", 490}, {"y", 440}},
+				{{"x", 560}, {"y", 440}},
+				{{"x", 630}, {"y", 440}},
+				{{"x", 700}, {"y", 440}},
+
+				{{"x",  70}, {"y", 550}},
+				{{"x", 140}, {"y", 550}},
+				{{"x", 210}, {"y", 550}},
+				{{"x", 280}, {"y", 550}},
+				{{"x", 350}, {"y", 550}},
+				{{"x", 420}, {"y", 550}},
+				{{"x", 490}, {"y", 550}},
+				{{"x", 560}, {"y", 550}},
+				{{"x", 630}, {"y", 550}},
+				{{"x", 700}, {"y", 550}}
+			},
+		},
+		{
+			"ladders", {
+				{{"x", 280}, {"y", 143}},
+				{{"x", 350}, {"y", 253}},
+				{{"x", 250}, {"y", 363}},
+				{{"x", 500}, {"y", 363}},
+				{{"x", 600}, {"y", 473}}
+			}
+		},
+		{
+			"coins", {
+				{{"x",  90}, {"y", 180}},
+				{{"x",  80}, {"y", 400}},
+				{{"x", 700}, {"y", 400}},
+				{{"x", 450}, {"y", 510}}
+			}
+		}
+	};
+
+	// Draw blocks
 	_TextureBlock.loadFromFile("Media/Textures/Block.png");
 	_sizeBlock = _TextureBlock.getSize();
+	_Block.setTexture(_TextureBlock);
 
-	for (int i = 0; i < BLOCK_COUNT_X; i++)
+	auto blocks = level["blocks"].get<std::vector<json>>();
+	for (json block : blocks)
 	{
-		for (int j = 0; j < BLOCK_COUNT_Y; j++)
-		{
-			_Block[i][j].setTexture(_TextureBlock);
-			_Block[i][j].setPosition(100.f + 70.f * (i + 1), 0.f + BLOCK_SPACE * (j + 1));
-
-			std::shared_ptr<Entity> se = std::make_shared<Entity>();
-			se->m_sprite = _Block[i][j];
-			se->m_type = EntityType::block;
-			se->m_size = _TextureBlock.getSize();
-			se->m_position = _Block[i][j].getPosition();
-			EntityManager::m_Entities.push_back(se);
-		}
+		_Block.setPosition(block["x"].get<float>(), block["y"].get<float>());
+		std::shared_ptr<Block> sb = std::make_shared<Block>(_Block, _TextureBlock.getSize(), _Block.getPosition());
+		EntityManager::m_Blocks.push_back(sb);
 	}
 
 	// Draw Echelles
+	_TextureLadder.loadFromFile("Media/Textures/Echelle.png");
+	_Ladder.setTexture(_TextureLadder);
 
-	_TextureEchelle.loadFromFile("Media/Textures/Echelle.png");
-
-	for (int i = 0; i < ECHELLE_COUNT; i++)
+	auto ladders = level["ladders"].get<std::vector<json>>();
+	for (json ladder : ladders)
 	{
-		_Echelle[i].setTexture(_TextureEchelle);
-		_Echelle[i].setPosition(100.f + 70.f * (i + 1), 0.f + BLOCK_SPACE * (i + 1) + _sizeBlock.y );
-
-		std::shared_ptr<Entity> se = std::make_shared<Entity>();
-		se->m_sprite = _Echelle[i];
-		se->m_type = EntityType::echelle;
-		se->m_size = _TextureEchelle.getSize();
-		se->m_position = _Echelle[i].getPosition();
-		EntityManager::m_Entities.push_back(se);
+		_Ladder.setPosition(ladder["x"].get<float>(), ladder["y"].get<float>());
+		std::shared_ptr<Ladder> sl = std::make_shared<Ladder>(_Ladder, _TextureLadder.getSize(), _Ladder.getPosition());
+		EntityManager::m_Ladders.push_back(sl);
 	}
+	
+	// Draw Coin
+	_TextureCoin.loadFromFile("Media/Textures/Piece.PNG");
+	_Coin.setTexture(_TextureCoin);
+
+	auto coins = level["coins"].get<std::vector<json>>();
+	for (json coin : coins)
+	{
+		_Coin.setPosition(coin["x"].get<float>(), coin["y"].get<float>());
+		std::shared_ptr<Coin> sc = std::make_shared<Coin>(_Coin, _TextureCoin.getSize(), _Coin.getPosition());
+		EntityManager::m_Coin.push_back(sc);
+	}
+
+	//Draw Donkey Kong
+	textureDk.loadFromFile("Media/Textures/dk.png");
+	sizeDk = textureDk.getSize();
+	spriteDk.setTexture(textureDk);
+	sf::Vector2f posDk;
+	posDk.x = level["dk"]["x"].get<float>();
+	posDk.y = level["dk"]["y"].get<float>();
+
+	spriteDk.setPosition(posDk);
+	std::shared_ptr<Dk> dk = std::make_shared<Dk>(spriteDk, textureDk.getSize(), spriteDk.getPosition());
+	EntityManager::m_Dk = dk;
 
 	// Draw Mario
 
-	mTexture.loadFromFile("Media/Textures/Mario_small_transparent.png"); // Mario_small.png");
+	mTexture.loadFromFile("Media/Textures/Mario_small_transparent.png");
 	_sizeMario = mTexture.getSize();
 	mPlayer.setTexture(mTexture);
 	sf::Vector2f posMario;
-	posMario.x = 100.f + 70.f;
-	posMario.y = BLOCK_SPACE * 5 - _sizeMario.y;
+	posMario.x = level["player"]["x"].get<float>();
+	posMario.y = level["player"]["y"].get<float>();
 
 	mPlayer.setPosition(posMario);
 
-	std::shared_ptr<Entity> player = std::make_shared<Entity>();
-	player->m_sprite = mPlayer;
-	player->m_type = EntityType::player;
-	player->m_size = mTexture.getSize();
-	player->m_position = mPlayer.getPosition();
-	EntityManager::m_Entities.push_back(player);
+	//Draw player
+	std::shared_ptr<Player> player = std::make_shared<Player>(mPlayer, mTexture.getSize(), mPlayer.getPosition());
+	EntityManager::m_Player = player;
+
+	//Prepare Barrel drawing
+	dk->_TextureBarrel.loadFromFile("Media/Textures/barrel.png");
+	dk->_sizeBarrel = dk->_TextureBarrel.getSize();
+	dk->_Barrel.setTexture(dk->_TextureBarrel);
 
 	// Draw Statistic Font 
-
 	mFont.loadFromFile("Media/Sansation.ttf");
 	mStatisticsText.setString("Welcome to Donkey Kong 1981");
 	mStatisticsText.setFont(mFont);
 	mStatisticsText.setPosition(5.f, 5.f);
 	mStatisticsText.setCharacterSize(10);
+
+	//Draw endgame
+	mEndGame.setFont(mFont);
+	mEndGame.setPosition(120.f, 120.f);
 }
 
 void Game::run()
@@ -112,6 +207,7 @@ void Game::processEvents()
 	sf::Event event;
 	while (mWindow.pollEvent(event))
 	{
+		
 		switch (event.type)
 		{
 		case sf::Event::KeyPressed:
@@ -131,47 +227,98 @@ void Game::processEvents()
 
 void Game::update(sf::Time elapsedTime)
 {
-	sf::Vector2f movement(0.f, 0.f);
-	if (mIsMovingUp)
-		movement.y -= PlayerSpeed;
-	if (mIsMovingDown)
-		movement.y += PlayerSpeed;
-	if (mIsMovingLeft)
-		movement.x -= PlayerSpeed;
-	if (mIsMovingRight)
-		movement.x += PlayerSpeed;
-
-	for (std::shared_ptr<Entity> entity : EntityManager::m_Entities)
+	std::shared_ptr<Player> player = EntityManager::m_Player;
+	if (!player->IsOnBlock() && !player->mIsJump && !player->disabledGravity)
 	{
-		if (entity->m_enabled == false)
-		{
-			continue;
+		if (!player->IsOnLadder() || (player->IsOnLadder() && player->jump)) {
+			Collide::putOnTheFloor(EntityManager::m_Player);
 		}
-
-		if (entity->m_type != EntityType::player)
-		{
-			continue;
-		}
-
-		entity->m_sprite.move(movement * elapsedTime.asSeconds());
+		return;
 	}
+
+	if (player->jumpHeight > 50) {
+		player->mIsJump = false;
+	}
+
+	if (!player->jump) {
+		if (player->IsOnLadder() && !player->IsOnBlock()) {
+			player->mIsMovingLeft = false;
+			player->mIsMovingRight = false;
+		}
+		if (player->IsOnLadderAxis() && player->mIsMovingDown) {
+			player->mIsMovingLeft = false;
+			player->mIsMovingRight = false;
+		}
+	}
+
+	player->Move();
+	EntityManager::m_Dk->spawnBarrel();
+	Barrel::moveAll();
+	isGameOver();
 }
 
 void Game::render()
 {
 	mWindow.clear();
 
-	for (std::shared_ptr<Entity> entity : EntityManager::m_Entities)
+	for (std::shared_ptr<Block> block : EntityManager::m_Blocks)
 	{
-		if (entity->m_enabled == false)
+		if (block->m_enabled == false)
 		{
 			continue;
 		}
 
-		mWindow.draw(entity->m_sprite);
+		mWindow.draw(block->m_sprite);
 	}
 
+	for (std::shared_ptr<Ladder> ladder : EntityManager::m_Ladders)
+	{
+		if (ladder->m_enabled == false)
+		{
+			continue;
+		}
+
+		mWindow.draw(ladder->m_sprite);
+	}
+
+	for (std::shared_ptr<Coin> coin : EntityManager::m_Coin)
+	{
+		if (coin->m_enabled == false)
+		{
+			continue;
+		}
+
+		mWindow.draw(coin->m_sprite);
+	}
+
+	for (std::shared_ptr<Barrel> barrel : EntityManager::m_Barrels)
+	{
+		if (barrel->m_enabled == false)
+		{
+			continue;
+		}
+
+		mWindow.draw(barrel->m_sprite);
+	}
+
+	mWindow.draw(EntityManager::m_Player->m_sprite);
+	mWindow.draw(EntityManager::m_Player->m_border);
+	mWindow.draw(EntityManager::m_Dk->m_sprite);
+	mWindow.draw(EntityManager::m_Dk->m_border);
+
 	mWindow.draw(mStatisticsText);
+	if (win && EntityManager::m_Player->invinsible) {
+		mEndGame.setCharacterSize(160);
+		mEndGame.setString("Cheater!");
+	} else if(win) {
+		mEndGame.setCharacterSize(160);
+		mEndGame.setString("You won!");
+	}
+	else if (EntityManager::m_Player->isDead) {
+		mEndGame.setCharacterSize(90);
+		mEndGame.setString("Mario is dead !");
+	}
+	mWindow.draw(mEndGame);
 	mWindow.display();
 }
 
@@ -202,16 +349,94 @@ void Game::updateStatistics(sf::Time elapsedTime)
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-	if (key == sf::Keyboard::Up)
-		mIsMovingUp = isPressed;
-	else if (key == sf::Keyboard::Down)
-		mIsMovingDown = isPressed;
-	else if (key == sf::Keyboard::Left)
-		mIsMovingLeft = isPressed;
-	else if (key == sf::Keyboard::Right)
-		mIsMovingRight = isPressed;
+	std::shared_ptr<Player> player = EntityManager::m_Player;
+	if (key == sf::Keyboard::Up) {
+		if (player->IsOnLadder()) {
+			player->mIsMovingUp = isPressed;
+			player->disabledGravity = true;
+		}
+		else if (!player->IsOnBlock()) {
+			player->mIsMovingUp = isPressed;
+			player->disabledGravity = true;
+		} else {
+			player->mIsMovingUp = false;
+			player->disabledGravity = false;
+		}
+	}
+
+	if (key == sf::Keyboard::Left && player->IsOnBlock()) {
+		player->mIsMovingLeft = isPressed;
+	}
+	
+	if (key == sf::Keyboard::Right && player->IsOnBlock()) {
+		player->mIsMovingRight = isPressed;
+	}
+
+	if (key == sf::Keyboard::Down && (!player->IsOnBlock() ||
+		player->IsOnLadderAxis())) {
+		player->disabledGravity = true;
+		player->mIsMovingDown = isPressed;
+	}
+	else if (player->IsOnBlock()) {
+		player->disabledGravity = false;
+		player->mIsMovingDown = false;
+	}
 
 	if (key == sf::Keyboard::Space)
 	{
+		if (player->IsOnBlock())
+		{
+			player->jump = true;
+			player->mIsJump = true;
+		}
+	}
+
+	if (key == sf::Keyboard::I)
+	{
+		player->invinsible = true;
+	}
+}
+
+void Game::isGameOver()
+{
+	isPlayerDead();
+	isPlayerGetCoin();
+}
+
+void Game::isPlayerDead()
+{
+	if (EntityManager::m_Player->invinsible) return;
+
+	for (std::shared_ptr<Barrel> barrel : EntityManager::m_Barrels)
+	{
+		if (barrel->m_sprite.getGlobalBounds().intersects(EntityManager::m_Player->m_sprite.getGlobalBounds()))
+		{
+			EntityManager::m_Player->isDead = true;
+		}
+	}
+}
+
+bool Game::allCoinGet() {
+	for (std::shared_ptr<Coin> coin : EntityManager::m_Coin)
+	{
+		if (coin->m_enabled) {
+			return false;
+		}
+	}
+	return true;
+}
+
+void Game::isPlayerGetCoin()
+{
+	for (int i = 0; i < EntityManager::m_Coin.size(); i++) {
+		if (EntityManager::m_Coin[i]->m_sprite.getGlobalBounds().intersects(EntityManager::m_Player->m_sprite.getGlobalBounds()))
+		{
+			EntityManager::m_Coin[i]->m_enabled = false;
+		}
+	}
+
+	if (allCoinGet()) {
+		if(!EntityManager::m_Player->isDead)
+			win = true;
 	}
 }

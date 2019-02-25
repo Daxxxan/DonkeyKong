@@ -36,3 +36,8 @@
 Release/*
 DonkeyKong/*
 *.sln
+*.CL*
+*.tlog*
+*.log
+*.idb
+*.pdb

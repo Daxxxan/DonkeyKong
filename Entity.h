@@ -1,23 +1,17 @@
 #pragma once
-
-enum EntityType
-{
-	player,
-	block,
-	echelle
-};
+#include "pch.h"
 
 class Entity
 {
 public:
-	Entity() { };
+	Entity(sf::Sprite m_sprite, sf::Vector2u m_size, sf::Vector2f m_position);
 	~Entity() { };
 
 public:
 	sf::Sprite m_sprite;
 	sf::Vector2u m_size;
 	sf::Vector2f m_position;
-	EntityType m_type;
+	sf::RectangleShape m_border;
 	bool m_enabled = true;
 
 	// Enemy only

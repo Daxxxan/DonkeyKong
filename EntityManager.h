@@ -1,5 +1,11 @@
 #pragma once
-#include "Entity.h"
+#include "pch.h"
+#include "Player.h"
+#include "Ladder.h"
+#include "Block.h"
+#include "Dk.h"
+#include "Barrel.h"
+#include "Coin.h"
 
 class EntityManager
 {
@@ -8,7 +14,11 @@ public:
 	~EntityManager();
 
 public:
-	static std::vector<std::shared_ptr<Entity>> m_Entities;
-	static std::shared_ptr<Entity> GetPlayer();
+	static std::shared_ptr<Player> m_Player;
+	static std::shared_ptr<Dk> m_Dk;
+	static std::vector<std::shared_ptr<Ladder>> m_Ladders;
+	static std::vector<std::shared_ptr<Coin>> m_Coin;
+	static std::vector<std::shared_ptr<Block>> m_Blocks;
+	static std::vector<std::shared_ptr<Barrel>> m_Barrels;
 };
 
