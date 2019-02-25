@@ -42,6 +42,18 @@
     <ClCompile Include="Ladder.cpp">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Collide.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Dk.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Barrel.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Entity.h">
@@ -66,6 +78,18 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Ladder.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Collide.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Dk.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Barrel.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>
@@ -95,6 +119,12 @@
       <Filter>Fichiers de ressources</Filter>
     </Image>
     <Image Include="Media\Textures\tumblr_mkcq5fge0w1s9677oo1_r1_500.gif">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Media\Textures\dk.png">
+      <Filter>Fichiers de ressources</Filter>
+    </Image>
+    <Image Include="Media\Textures\barrel.png">
       <Filter>Fichiers de ressources</Filter>
     </Image>
   </ItemGroup>
